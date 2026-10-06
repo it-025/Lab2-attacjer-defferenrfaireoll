@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сводный отчёт по практическим работам и ДЗ по ИБ</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #131d31;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-purple: #8b5cf6;
+            --danger: #ef4444;
+            --code-bg: #070a12;
+            --border-color: rgba(255, 255, 255, 0.08);
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 30px 20px;
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+        }
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        .section-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 35px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+        }
+        h2 {
+            color: #60a5fa;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-top: 0;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h3 {
+            color: #34d399;
+            margin-top: 30px;
+            font-size: 1.2rem;
+        }
+        p, li {
+            font-size: 1.02rem;
+            color: #e2e8f0;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        code {
+            background-color: var(--code-bg);
+            color: #f472b6;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        pre {
+            background-color: var(--code-bg);
+            color: #a5f3fc;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.92rem;
+            margin: 15px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 14px;
+            text-align: left;
+        }
+        th {
+            background-color: rgba(255, 255, 255, 0.03);
+            color: #60a5fa;
+        }
+        .badge {
+            display: inline-block;
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .challenge-box {
+            background-color: rgba(239, 68, 68, 0.08);
+            border-left: 4px solid var(--danger);
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 25px;
+        }
+        .challenge-box h4 {
+            color: #f87171;
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Сводный отчёт по практическим работам</h1>
+            <p>Дисциплина: Защита информации и безопасность компьютерных систем (Kali Linux + PostgreSQL + Suricata)</p>
+        </header>
+
+        <!-- МОДУЛЬ 1 -->
+        <div class="section-card">
+            <h2>🛡️ Модуль 1: Активное реагирование и сетевой мониторинг (Fail2ban & Suricata)</h2>
+            
+            <h3>1. Настройка Fail2ban для защиты SSH</h3>
+            <p><strong>Цель:</strong> Автоматическое обнаружение попыток брутфорса и динамическая блокировка атакующих IP-адресов через межсетевой экран[cite: 9].</p>
+            <ul>
+                <li><strong>Проблема окружения:</strong> В современных сборках Kali Linux системный SSH перешел на использование <code>systemd</code> и сессий <code>sshd-session</code>, что ломает стандартные регулярные выражения фильтров Fail2ban[cite: 9].</li>
+                <li><strong>Решение:</strong> Подключена и настроена служба <code>rsyslog</code> для дублирования событий в текстовый лог-файл <code>/var/log/auth.log</code>[cite: 9].</li>
+                <li><strong>Бэкенд опроса:</strong> В файле <code>jail.local</code> принудительно задан параметр <code>backend = polling</code> для стабильного мониторинга логов[cite: 9].</li>
+            </ul>
+            <pre><code># Команды проверки работы Fail2ban
+sudo fail2ban-client status sshd
+fail2ban-regex /var/log/auth.log /etc/fail2ban/filter.d/sshd.local</code></pre>
+            <p><em>Результат:</em> После тестовой атаки утилитой Hydra зафиксировано успешное блокирование хоста (<span class="badge">Total banned: 1</span>)[cite: 9].</p>
+
+            <h3>2. Домашнее задание: Правило обнаружения Suricata для SSH Brute-Force</h3>
+            <p>В рамках домашнего задания разработано кастомное правило для IDS Suricata, размещаемое в файле <code>/local.rules</code>[cite: 9]:</p>
+            <pre><code>alert tcp any any -> any 22 (msg:"SSH Brute Force Attempt Detected"; flow:established,to_server; threshold: type both, track by_src, count 5, seconds 60; sid:1000001; rev:1;)</code></pre>
+            <p><strong>Детальный разбор ключевых полей правила и порога срабатывания:</strong></p>
+            <ul>
+                <li><code>flow:established,to_server</code> — анализ уже установленных TCP-соединений, направленных от клиента к SSH-серверу (порт 22), что отсекает пустые сканирования и фиксирует реальные попытки аутентификации.</li>
+                <li><code>threshold: type both, track by_src, count 5, seconds 60</code> — механизм контроля порога срабатывания:
+                    <ul>
+                        <li><code>track by_src</code> — ведение подсчета отдельно для каждого уникального IP-адреса источника.</li>
+                        <li><code>count 5</code> и <code>seconds 60</code> — лимит: если с одного IP поступает 5 и более запросов в течение 60 секунд, фиксируется тревожное событие.</li>
+                        <li><code>type both</code> — режим выдачи алертов, фиксирующий превышение лимита без избыточного заспамливания журнала.</li>
+                    </ul>
+                </li>
+                <li><code>sid:1000001</code> — уникальный идентификатор пользовательского правила (Security ID).</li>
+            </ul>
+
+            <div class="challenge-box">
+                <h4>⚠️️ Сложности модуля 1 и их преодоление:</h4>
+                <p>Главная сложность заключалась в синтаксических особенностях запуска правил через командную строку терминала (`zsh` выдавал `parse error` из-за круглых скобок и точек с запятой). Проблема решена корректным внесением правил через текстовый редактор `nano` в файл локальных правил Suricata[cite: 9].</p>
+            </div>
+        </div>
+
+        <!-- МОДУЛЬ 2 -->
+        <div class="section-card">
+            <h2>🗄️ Модуль 2: Безопасность СУБД, разграничение доступа и аудит (PostgreSQL)</h2>
+            <p><strong>Цель:</strong> Развертывание защищенной реляционной СУБД, реализация ролевой модели (ИАФ, УПД), аудит (РСБ), сетевая изоляция и политики безопасности для ИИ[cite: 9].</p>
+
+            <h3>1. Устранение системного конфликта локали (Collation)</h3>
+            <p>После обновления системных библиотек <code>glibc</code> в Kali Linux возникло несоответствие версий сортировки (<code>2.41</code> против <code>2.43</code>), вызывающее ошибки шаблона[cite: 9].</p>
+            <pre><code>ALTER DATABASE template1 REFRESH COLLATION VERSION;
+ALTER DATABASE postgres REFRESH COLLATION VERSION;
+CREATE DATABASE aszi;
+\c aszi</code></pre>
+
+            <h3>2. Проектирование реляционной и документной структуры</h3>
+            <p>Созданы таблицы <code>regions</code>, <code>citizens</code>, <code>requests</code> со строгими внешними ключами (`FOREIGN KEY`) и ограничениями целостности[cite: 4], а также таблица <code>documents (jsonb)</code> для полуструктурированных данных[cite: 5].</p>
+
+            <h3>3. Ролевая модель и проверка отказов (ИАФ + УПД)</h3>
+            <p>Созданы роли <code>op_msk</code> и <code>analyst</code> с минимально необходимыми привилегиями. При попытке оператора выполнить несанкционированное удаление записей (`DELETE FROM requests`) СУБД закономерно выдала отказ <span class="badge">permission denied</span>[cite: 6].</p>
+
+            <h3>4. Журнал аудита (РСБ) и Политика ИИ (Приказ №117)</h3>
+            <ul>
+                <li><strong>Аудит изменений:</strong> С помощью триггера <code>trg_requests</code> и функции <code>log_change()</code> каждое изменение в таблице обращений автоматически фиксируется в журнале <code>audit_log</code>[cite: 7].</li>
+                <li><strong>Защита данных при работе с ИИ:</strong> Настроена таблица политик и логов <code>ai_log</code>, где запросы, содержащие персональные данные (например, ФИО «Иванов И.И.»), безусловно блокируются со статусом <span class="badge" style="background-color: rgba(239, 68, 68, 0.15); color: var(--danger); border-color: rgba(239, 68, 68, 0.3);">false</span>[cite: 5, 8].</li>
+            </ul>
+
+            <h3>5. Проверка сетевой изоляции СУБД</h3>
+            <p>С помощью утилит <code>ss -tlnp</code> и <code>nmap 127.0.0.1</code> подтверждено, что PostgreSQL прослушивает исключительно локальный интерфейс (<code>127.0.0.1:5432</code>), исключая сетевой доступ извне[cite: 5, 8].</p>
+
+            <h3>📊 Сравнение реляционного и документного хранения</h3>
+            <table>
+                <tr>
+                    <th>Критерий</th>
+                    <th>Реляционные таблицы</th>
+                    <th>Документное хранение (JSONB)</th>
+                </tr>
+                <tr>
+                    <td>Структура и схема</td>
+                    <td>Строгая схема, жесткие типы данных и связи.</td>
+                    <td>Гибкая схема, вложенные поля и документы[cite: 5].</td>
+                </tr>
+                <tr>
+                    <td>Контроль безопасности</td>
+                    <td>Высокий уровень мандатного и ролевого контроля на уровне строк и столбцов.</td>
+                    <td>Сложнее валидировать и маскировать отдельные внутренние поля на уровне СУБД.</td>
+                </tr>
+                <tr>
+                    <td>Область применения</td>
+                    <td>Учет граждан, финансовые транзакции, персональные данные.</td>
+                    <td>Логирование полуструктурированных событий, быстрые прототипы, конфигурации.</td>
+                </tr>
+            </table>
+
+            <div class="challenge-box">
+                <h4>⚠️ Сложности модуля 2 и их преодоление:</h4>
+                <p>Основные трудности были связаны с системными предупреждениями о несовпадении версий локали после обновлений ОС[cite: 9], а также с необходимостью точного предоставления прав на последовательности (sequences) для корректного автоинкремента у непривилегированных пользователей СУБД.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
